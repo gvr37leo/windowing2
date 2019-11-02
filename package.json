@@ -4,7 +4,7 @@
   "description": "",
   "main": "package.js",
   "dependencies": {
-    "eventsystemx": "*",
+    "eventsystemx": "^1.2.0",
     "express": "*",
     "rect3x": "^1.1.0",
     "utilsx": "^1.14.0",
