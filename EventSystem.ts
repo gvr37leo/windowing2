@@ -37,7 +37,7 @@ class Box<T>{
     }
 
     boxtrigger(){
-        this.onchange.trigger(new BoxEvent(this.value,this.oldValue),[])
+        this.onchange.trigger(new BoxEvent(this.value,this.oldValue))
     }
 }
 
@@ -57,7 +57,7 @@ class EventSystem<T>{
         this.callbacks.splice(this.callbacks.findIndex(v => v === callback), 1)
     }
 
-    trigger(value: T,excludes: ((val: T) => void)[]) {
+    trigger(value: T) {
         for (var callback of this.callbacks) {
             callback(value)
         }
@@ -110,28 +110,27 @@ class ObjectBox<T>{
 }
 
 class PEvent<T>{
-    handled = false
-
+    cbset:Set<T>
     constructor(public val:T){
 
     }
 
-    static create<T>(handled:boolean,val:T){
+    static create<T>(val:T){
         var e = new PEvent(val)
-        e.handled = handled
         return e
     }
 }
 
+
+
 class PBox<T>{
     box:Box<T>
-    onchange:EventSystem<PEvent<T>> = new EventSystem()
-    private isProtected:boolean = false
+    onchange:EventSystem<PEvent<BoxEvent<T>>> = new EventSystem()
 
     constructor(val:T){
         this.box = new Box(val)
         this.box.onchange.listen((val) => {
-            this.onchange.trigger(PEvent.create(this.isProtected,val),null)
+            this.onchange.trigger(new PEvent(null))
         })
     }
 
@@ -139,24 +138,8 @@ class PBox<T>{
         return this.box.value
     }
 
-    set(v:T){
-        this.box.set(v)
-    }
 
-    setHP(handled:boolean,val:T){
-        this.setProtected(PEvent.create(handled,val))
-    }
-
-    setProtected(e:PEvent<T>){
-        if(!e.handled){
-            e.handled = true
-            this.setS(e)
-        }
-    }
-
-    setS(e:PEvent<T>){
-        this.isProtected = e.handled
+    set(e:PEvent<T>){
         this.box.set(e.val)
-        this.isProtected = false
     }
 }

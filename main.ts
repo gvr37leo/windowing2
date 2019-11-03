@@ -58,9 +58,19 @@ function attachHandles2Rect(rect:UIRect):Handle[]{
     return lhandles
 }
 
-var inputa = new Box(0)
-// inputa starts trigger put self in exclusion map
 
-var inputb = new Box(0)
 
-var inputc = new Box(0)
+var inputa = new PBox(0)
+inputa.onchange.listen(e => {
+    inputb.set(new PEvent(0))
+})
+
+var inputb = new PBox(0)
+inputb.onchange.listen(e => {
+    inputc.set(new PEvent(0))
+})
+
+var inputc = new PBox(0)
+inputc.onchange.listen(e => {
+    inputa.set(new PEvent(0))
+})
