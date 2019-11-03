@@ -1,8 +1,10 @@
 /// <reference path="node_modules/vectorx/vector.ts" />
 /// <reference path="node_modules/utilsx/utils.ts" />
 /// <reference path="node_modules/rect3x/rect.ts" />
-/// <reference path="node_modules/eventsystemx/EventSystem.ts" />
+/// <reference path="EventSystem.ts" />
 /// <reference path="window.ts" />
+/// <reference path="flexbox.ts" />
+
 /// <reference path="handle.ts" />
 
 
@@ -32,6 +34,33 @@ loop((dt) => {
     ctxt.clearRect(0,0,500,500)
     root.draw()
     handles.forEach(h => h.draw(ctxt))
-    
-
 })
+
+function attachHandles2Rect(rect:UIRect):Handle[]{
+    var lhandles = [
+        new Handle(new Vector(10,10),clickmanager),//anchormin
+        new Handle(new Vector(20,20),clickmanager),//anchormax
+        new Handle(new Vector(30,30),clickmanager),//offsetmin
+        new Handle(new Vector(40,40),clickmanager),//offsetmax
+    ]
+
+    var lhhandle0 = lhandles[0].pos.onchange.listen((v) => {
+        rect.anchormin = new Vector()
+        rect.markDirty()
+    })
+
+
+    rect.onAbsrectUpdate.listen(() => {
+        lhandles[0].pos.set(new Vector(0,0))//exclude ^
+        
+    })
+
+    return lhandles
+}
+
+var inputa = new Box(0)
+// inputa starts trigger put self in exclusion map
+
+var inputb = new Box(0)
+
+var inputc = new Box(0)
