@@ -109,8 +109,9 @@ class ObjectBox<T>{
     }
 }
 
+
 class PEvent<T>{
-    cbset:Set<T>
+    cbset:Set<(val:PEvent<T>) => void>
     constructor(public val:T){
 
     }
@@ -120,6 +121,27 @@ class PEvent<T>{
         return e
     }
 }
+
+class EventSystemP<T>{
+    cbs:((val:PEvent<T>) => void)[] = []
+
+    listen(cb:(val:PEvent<T>) => void){
+        this.cbs.push(cb)
+        return cb
+    }
+
+    trigger(e:PEvent<T>){
+        
+        for (var cb of this.cbs) {
+            if(e.cbset.has(cb)){
+                continue
+            }
+            e.cbset.add(cb)
+            cb(e)
+        }
+    }
+}
+
 
 
 
