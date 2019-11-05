@@ -67,12 +67,12 @@ inputa.onchange.listen(e => {
 
 var inputb = new Box(0)
 inputb.onchange.listen(e => {
-    inputc.set(3,e)
+    inputc.continueSet(3,e)
 })
 
 var inputc = new Box(0)
 inputc.onchange.listen(e => {
-    inputa.set(1,e)
+    inputa.continueSet(1,e)
 })
 
 inputa.set(9)

@@ -20,7 +20,7 @@ class Box<T>{
     }
 
     set(value: T) {
-        
+        this.continueSet(value,new PEvent(new BoxEvent(value,this.value)))
     }
 
     continueSet(value: T, e: PEvent<BoxEvent<T>>){
@@ -29,17 +29,20 @@ class Box<T>{
         // this.oldValue != value || 
         if (!this.isSet) {
             this.isSet = true;
-            this.trigger()
+            this.continueTrigger(e)
         }
     }
 
     clear() {
         this.isSet = false
-        this.set(null)
+    }
+
+    continueTrigger(e: PEvent<BoxEvent<T>>){
+        this.onchange.continueTrigger(e)
     }
 
     trigger(){
-        this.onchange.trigger(new BoxEvent(this.value,this.oldValue))
+        this.continueTrigger(new PEvent(new BoxEvent(this.value,this.oldValue)))
     }
 }
 
