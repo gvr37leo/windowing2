@@ -33,7 +33,7 @@ root.updateAbsRect(container)
 loop((dt) => {
     ctxt.clearRect(0,0,500,500)
     root.draw()
-    handles.forEach(h => h.draw(ctxt))
+    // handles.forEach(h => h.draw(ctxt))
 })
 
 function attachHandles2Rect(rect:UIRect):Handle[]{
@@ -60,17 +60,19 @@ function attachHandles2Rect(rect:UIRect):Handle[]{
 
 
 
-var inputa = new PBox(0)
+var inputa = new Box(0)
 inputa.onchange.listen(e => {
-    inputb.set(new PEvent(0))
+    inputb.continueSet(2,e)
 })
 
-var inputb = new PBox(0)
+var inputb = new Box(0)
 inputb.onchange.listen(e => {
-    inputc.set(new PEvent(0))
+    inputc.set(3,e)
 })
 
-var inputc = new PBox(0)
+var inputc = new Box(0)
 inputc.onchange.listen(e => {
-    inputa.set(new PEvent(0))
+    inputa.set(1,e)
 })
+
+inputa.set(9)
