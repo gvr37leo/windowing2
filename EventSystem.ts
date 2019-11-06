@@ -8,7 +8,6 @@ class Box<T>{
     onchange: EventSystem<BoxEvent<T>>
     value: T
     oldValue:T
-    isSet: boolean = false
 
     constructor(value: T) {
         this.onchange = new EventSystem();
@@ -26,15 +25,11 @@ class Box<T>{
     continueSet(value: T, e: PEvent<BoxEvent<T>>){
         this.oldValue = this.value
         this.value = value
-        // this.oldValue != value || 
-        if (!this.isSet) {
-            this.isSet = true;
+        e.val.old = this.oldValue
+        e.val.val = this.value
+        if (this.oldValue != value) {
             this.continueTrigger(e)
         }
-    }
-
-    clear() {
-        this.isSet = false
     }
 
     continueTrigger(e: PEvent<BoxEvent<T>>){

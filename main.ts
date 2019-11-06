@@ -33,7 +33,7 @@ root.updateAbsRect(container)
 loop((dt) => {
     ctxt.clearRect(0,0,500,500)
     root.draw()
-    // handles.forEach(h => h.draw(ctxt))
+    handles.forEach(h => h.draw(ctxt))
 })
 
 function attachHandles2Rect(rect:UIRect):Handle[]{
