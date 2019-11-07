@@ -22,7 +22,7 @@ class Box<T>{
         this.continueSet(value,new PEvent(new BoxEvent(value,this.value)))
     }
 
-    continueSet(value: T, e: PEvent<BoxEvent<T>>){
+    continueSet(value: T, e: PEvent<BoxEvent<any>>){
         this.oldValue = this.value
         this.value = value
         e.val.old = this.oldValue
@@ -71,18 +71,6 @@ class EventSystem<T>{
             e.cbset.add(cb)
             cb(e)
         }
-    }
-}
-
-class EventSystemVoid{
-    event:EventSystem<number> = new EventSystem()
-
-    listen(cb:() => void){
-        this.event.listen(cb)
-    }
-
-    trigger(){
-        this.event.trigger(0)
     }
 }
 

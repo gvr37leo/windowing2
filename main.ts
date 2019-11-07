@@ -29,6 +29,7 @@ var canvas = crret.canvas
 var ctxt = crret.ctxt
 var container = new Rect(new Vector(0,0),new Vector(500,500))
 root.updateAbsRect(container)
+updateHandles()
 
 loop((dt) => {
     ctxt.clearRect(0,0,500,500)
@@ -36,7 +37,12 @@ loop((dt) => {
     handles.forEach(h => h.draw(ctxt))
 })
 
+function readAnchorSetData(container,absanchor){
+        
+}
+
 function attachHandles2Rect(rect:UIRect):Handle[]{
+    var parent = rect.getParent()
     var lhandles = [
         new Handle(new Vector(10,10),clickmanager),//anchormin
         new Handle(new Vector(20,20),clickmanager),//anchormax
@@ -44,35 +50,14 @@ function attachHandles2Rect(rect:UIRect):Handle[]{
         new Handle(new Vector(40,40),clickmanager),//offsetmax
     ]
 
-    var lhhandle0 = lhandles[0].pos.onchange.listen((v) => {
+    lhandles[0].pos.onchange.listen(e => {
+        
+        inverseLerp(e.val.val.x ,parent.absrect.value.min.x,parent.absrect.value.max.x)
         rect.anchormin = new Vector()
         rect.markDirty()
     })
 
 
-    rect.onAbsrectUpdate.listen(() => {
-        lhandles[0].pos.set(new Vector(0,0))//exclude ^
-        
-    })
 
     return lhandles
 }
-
-
-
-var inputa = new Box(0)
-inputa.onchange.listen(e => {
-    inputb.continueSet(2,e)
-})
-
-var inputb = new Box(0)
-inputb.onchange.listen(e => {
-    inputc.continueSet(3,e)
-})
-
-var inputc = new Box(0)
-inputc.onchange.listen(e => {
-    inputa.continueSet(1,e)
-})
-
-inputa.set(9)

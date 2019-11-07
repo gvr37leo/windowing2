@@ -1,9 +1,8 @@
 
 class UIRect{
     
-    absrect:Rect
+    absrect:Box<Rect>
     dirty:boolean = true
-    onAbsrectUpdate:EventSystemVoid = new EventSystemVoid()
 
     constructor(public id:number,public parentid:number,public anchormin:Vector,public anchormax:Vector,public offsetmin:Vector,public offsetmax:Vector, public store:UIRect[]){
 
@@ -14,15 +13,18 @@ class UIRect{
         if(this.dirty){
             var absmin = container.getPoint(this.anchormin)
             var absmax = container.getPoint(this.anchormax)
-            this.absrect = new Rect(absmin.add(this.offsetmin),absmax.add(this.offsetmax))
+            this.absrect.set(new Rect(absmin.add(this.offsetmin),absmax.add(this.offsetmax)))
             this.dirty = false
-            this.onAbsrectUpdate.trigger()
         }
-        this.getChildren().forEach(c => c.updateAbsRect(this.absrect))
+        this.getChildren().forEach(c => c.updateAbsRect(this.absrect.get()))
     }
 
     getChildren(){
         return this.store.filter(r => r.parentid == this.id)
+    }
+
+    getParent(){
+        return this.store.find(r => r.id == this.id)
     }
 
     markDirty(){
@@ -30,13 +32,15 @@ class UIRect{
     }
 
     draw(){
-        this.dfwalk(r => r.absrect.draw(ctxt))
+        this.dfwalk(r => r.absrect.value.draw(ctxt))
     }
 
     dfwalk(cb:(rect:UIRect) => void){
         cb(this)
         this.getChildren().forEach(c => cb(c))
     }
+
+
 
     calcAbsAnchorPos(anchor:Vector,container:Rect):Vector{
         return this.uirectlerp(container.min,container.max,anchor)
